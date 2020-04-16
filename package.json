@@ -1,0 +1,19 @@
+{
+  "name": "autofy",
+  "version": "1.0.0",
+  "description": "Autofy Homeautomation package",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivek1052/Autofy.git"
+  },
+  "author": "Vivek Parashar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vivek1052/Autofy/issues"
+  },
+  "homepage": "https://github.com/vivek1052/Autofy#readme"
+}
