@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/vivek1052/Autofy/issues"
   },
-  "homepage": "https://github.com/vivek1052/Autofy#readme"
+  "homepage": "https://github.com/vivek1052/Autofy#readme",
+  "dependencies": {
+    "net": "^1.0.2"
+  }
 }
