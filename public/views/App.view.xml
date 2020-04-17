@@ -1,0 +1,55 @@
+<mvc:View controllerName="Quickstart.controller.App" displayBlock="true" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m">
+	<App id="app">
+		<Page title="Autofy">
+			<headerContent>
+				<Button icon="sap-icon://action-settings"/>
+			</headerContent>
+			<IconTabBar id="idIconTabBar" showOverflowSelectList="true" class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter text="Dining Hall">
+						<FlexBox justifyContent="SpaceAround" wrap="Wrap">
+							<items>
+								<GenericTile class="sapUiSmallMargin" header="Ceiling Fan" subheader="Power Cons:200">
+									<TileContent unit="Units" footer="Speed:60%">
+										<Switch state="false">
+											<layoutData>
+												<FlexItemData growFactor="1"/>
+											</layoutData>
+										</Switch>
+									</TileContent>
+								</GenericTile>
+								<GenericTile class="sapUiSmallMargin" header="Sales Fulfillment Application Title" subheader="Subtitle" press="press">
+									<TileContent unit="EUR" footer="Current Quarter">
+										<ImageContent src="sap-icon://home-share"/>
+									</TileContent>
+								</GenericTile>
+								<GenericTile class="sapUiSmallMargin" header="Sales Fulfillment Application Title" subheader="Subtitle" press="press">
+									<TileContent unit="EUR" footer="Current Quarter">
+										<ImageContent src="sap-icon://home-share"/>
+									</TileContent>
+								</GenericTile>
+								<GenericTile class="sapUiSmallMargin" header="Sales Fulfillment Application Title" subheader="Subtitle" press="press">
+									<TileContent unit="EUR" footer="Current Quarter">
+										<ImageContent src="sap-icon://home-share"/>
+									</TileContent>
+								</GenericTile>
+							</items>
+						</FlexBox>
+					</IconTabFilter>
+					<IconTabFilter text="Master Bedroom">
+						<Text text="Attachments go here ..."/>
+					</IconTabFilter>
+					<IconTabFilter text="Room1">
+						<Text text="Notes go here ..."/>
+					</IconTabFilter>
+					<IconTabFilter text="Room2">
+						<Text text="People content goes here ..."/>
+					</IconTabFilter>
+					<IconTabFilter text="Kitchen">
+						<Text text="People content goes here ..."/>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</Page>
+	</App>
+</mvc:View>
