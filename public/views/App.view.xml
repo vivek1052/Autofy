@@ -1,52 +1,25 @@
-<mvc:View controllerName="Quickstart.controller.App" displayBlock="true" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m">
+<mvc:View controllerName="autofy.controller.App" displayBlock="true" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m">
 	<App id="app">
 		<Page title="Autofy">
 			<headerContent>
-				<Button icon="sap-icon://action-settings"/>
+				<Button icon="sap-icon://action-settings" press="onMaintTablePress"/>
 			</headerContent>
-			<IconTabBar id="idIconTabBar" showOverflowSelectList="true" class="sapUiResponsiveContentPadding">
+			<IconTabBar id="idIconTabBar" showOverflowSelectList="true" class="sapUiResponsiveContentPadding" items="{nodes>/}">
 				<items>
-					<IconTabFilter text="Dining Hall">
-						<FlexBox justifyContent="SpaceAround" wrap="Wrap">
+					<IconTabFilter text="{nodes>nodeName}">
+						<FlexBox justifyContent="SpaceAround" wrap="Wrap" items="{nodes>appliances}">
 							<items>
-								<GenericTile class="sapUiSmallMargin" header="Ceiling Fan" subheader="Power Cons:200">
-									<TileContent unit="Units" footer="Speed:60%">
-										<Switch state="false">
+								<GenericTile class="sapUiSmallMargin" header="{nodes>applianceName}" subheader="Power Cons:200">
+									<TileContent unit="Units" footer="{nodes>pwm}">
+										<Switch state="{nodes>state}">
 											<layoutData>
 												<FlexItemData growFactor="1"/>
 											</layoutData>
 										</Switch>
 									</TileContent>
 								</GenericTile>
-								<GenericTile class="sapUiSmallMargin" header="Sales Fulfillment Application Title" subheader="Subtitle" press="press">
-									<TileContent unit="EUR" footer="Current Quarter">
-										<ImageContent src="sap-icon://home-share"/>
-									</TileContent>
-								</GenericTile>
-								<GenericTile class="sapUiSmallMargin" header="Sales Fulfillment Application Title" subheader="Subtitle" press="press">
-									<TileContent unit="EUR" footer="Current Quarter">
-										<ImageContent src="sap-icon://home-share"/>
-									</TileContent>
-								</GenericTile>
-								<GenericTile class="sapUiSmallMargin" header="Sales Fulfillment Application Title" subheader="Subtitle" press="press">
-									<TileContent unit="EUR" footer="Current Quarter">
-										<ImageContent src="sap-icon://home-share"/>
-									</TileContent>
-								</GenericTile>
 							</items>
 						</FlexBox>
-					</IconTabFilter>
-					<IconTabFilter text="Master Bedroom">
-						<Text text="Attachments go here ..."/>
-					</IconTabFilter>
-					<IconTabFilter text="Room1">
-						<Text text="Notes go here ..."/>
-					</IconTabFilter>
-					<IconTabFilter text="Room2">
-						<Text text="People content goes here ..."/>
-					</IconTabFilter>
-					<IconTabFilter text="Kitchen">
-						<Text text="People content goes here ..."/>
 					</IconTabFilter>
 				</items>
 			</IconTabBar>

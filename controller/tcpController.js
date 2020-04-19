@@ -1,43 +1,56 @@
 const dataModel = require('../models/dataModel.js');
-const nodeSchema = require('../models/nodeModel.js');
-const applianceSchema = require('../models/applianceModel.js');
+const Node = require('../models/nodeModel.js');
+const Appliance = require('../models/applianceModel.js');
 
-const NETWORK_MAP_REQ = 0;
-const NETWORK_MAP_RES = 1;
-const SEND_APPLIANCES = 2;
-const RECE_APPLIANCES = 3;
+const NODE_STATUS_REQ = 0;
+const NODE_STATUS_RES = 1;
 
-onSocketData = (data) => {
+
+onSocketData = function (data) {
+    console.log(data.toString());
     const parsedData = JSON.parse(data.toString());
     switch (parsedData.cmd) {
-        case NETWORK_MAP_RES: {
-            sockets[socket.remoteAddress].uniqueIDs = parsedData.response;
+        case NODE_STATUS_RES: {
+            this.node.setMAC(parsedData.response.mac);
+            dataModel.readFile().then(content=>{
+                const nodeConfig = JSON.parse(content);
+                this.node.setName(nodeConfig[this.node.mac].nodeName);
+            });
+            parsedData.response.devices.forEach(device => {
+                let appliance = new Appliance(device.i2cAddress).setPWM(device.pwm).setState(device.state);
+                this.node.addAppliance(appliance);
+                dataModel.readFile().then(content=>{
+                    const nodeConfig = JSON.parse(content);
+                    appliance.setName(nodeConfig[this.node.mac].appliances[device.i2cAddress].applianceName)
+                });
+            });
+            break;
         }
     }
-    console.log(data.toString());
+
 }
 
-onSocketEnd = () => {
-    delete sockets[socket.remoteAddress];
+onSocketEnd = function () {
+    // delete sockets[socket.remoteAddress];
 }
 
-sendCommand = (socket,command)=>{
+sendCommand = (socket, cmd) => {
     const command = {};
-    command.cmd = command;
+    command.cmd = cmd;
     socket.write(JSON.stringify(command));
 }
 
 exports.onSocketConnection = (socket) => {
     // 'connection' listener.
+    let node = new Node(socket);
     console.log('client connected' + socket.remoteAddress);
-    socket.on('end', onSocketEnd);
-    socket.on('data', onSocketData);
+    socket.on('end', onSocketEnd.bind({ 'node': node }));
+    socket.on('data', onSocketData.bind({ 'node': node }));
     socket.pipe(socket);
-    sendCommand(socket,NETWORK_MAP_REQ);
-    sendCommand(socket,SEND_APPLIANCES);
+    dataModel.nodes.push(node);
+    sendCommand(socket, NODE_STATUS_REQ);
 }
 
 exports.onServerError = (err) => {
     console.log(err);
-    delete sockets[socket.remoteAddress];
 }

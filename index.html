@@ -7,7 +7,7 @@
 		src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
 		data-sap-ui-theme="sap_belize"
 		data-sap-ui-libs="sap.m, sap.ui.layout, sap.tnt"
-		data-sap-ui-resourceroots='{"Quickstart": "./"}'
+		data-sap-ui-resourceroots='{"autofy": "./"}'
 		data-sap-ui-async="true">
 	</script>
 	<script>
@@ -15,7 +15,7 @@
 			sap.ui.require([
 				"sap/ui/core/mvc/XMLView"
 			], function (XMLView) {
-				XMLView.create({viewName: "Quickstart.views.App"}).then(function (oView) {
+				XMLView.create({viewName: "autofy.views.App"}).then(function (oView) {
 					oView.placeAt("content");
 				});
 			});

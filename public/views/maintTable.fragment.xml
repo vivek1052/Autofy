@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+    <ResponsivePopover title="Maintain Node Details" class="sapUiPopupWithPadding" placement="Bottom">
+        <Table items="{nodes>/}">
+			<columns>
+				<Column>
+					<Text text="MAC Address"/>
+				</Column>
+				<Column>
+					<Text text="Name"/>
+				</Column>
+				<Column minScreenWidth="Tablet" demandPopin="true">
+					<Text text="Appliances" />
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem>
+					<cells>
+						<ObjectIdentifier title="{nodes>mac}"/>
+						<Input value="{nodes>nodeName}" placeholder="Node Name"/>
+						<List  items="{nodes>appliances}">
+                            <InputListItem label="{nodes>i2caddress}">
+			                    <Input	placeholder="Appliance Name" value="{nodes>applianceName}" />
+                            </InputListItem>
+                        </List>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+		<beginButton>
+			<Button text="Save" press="onSaveMaintainence" />
+		</beginButton>        
+		<endButton>
+			<Button text="Cancel" press="onCancelMaintainence" />
+		</endButton>
+    </ResponsivePopover>
+</core:FragmentDefinition>
