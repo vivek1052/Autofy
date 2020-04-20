@@ -47,7 +47,8 @@ exports.onSocketConnection = (socket) => {
     socket.on('end', onSocketEnd.bind({ 'node': node }));
     socket.on('data', onSocketData.bind({ 'node': node }));
     socket.pipe(socket);
-    dataModel.nodes.push(node);
+    // dataModel.nodes.push(node);
+    global.globalNodes.push(node);
     sendCommand(socket, NODE_STATUS_REQ);
 }
 

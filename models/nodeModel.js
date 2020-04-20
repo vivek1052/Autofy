@@ -1,7 +1,6 @@
-'use strict';
 module.exports = class Node {
-    static findNodeByMAC(nodes,mac){
-        nodes.forEach(node => {
+    static findNodeByMAC(mac){
+        global.globalNodes.forEach(node => {
             if(node.mac === mac){
                 return node;
             }

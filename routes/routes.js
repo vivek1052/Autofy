@@ -10,7 +10,7 @@ router.get("/",(req,res,next)=>{
 
 router.get("/nodes",(req,res,next)=>{
     const nodes=[];
-    dataModel.nodes.forEach((node)=>{
+    global.globalNodes.forEach((node)=>{
       const appliances = [];
       node.appliances.forEach(appliance=>{
         appliances.push({i2caddress:appliance.i2cAddress,
