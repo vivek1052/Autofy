@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const dataModel = require('../models/dataModel.js');
-const NodeClass = require('../models/nodeModel.js');
 
 router.get("/",(req,res,next)=>{
     res.sendFile(path.join(path.dirname(process.mainModule.filename),"/index.html"))

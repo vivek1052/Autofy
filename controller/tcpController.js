@@ -1,54 +1,70 @@
 const dataModel = require('../models/dataModel.js');
-const Node = require('../models/nodeModel.js');
-const Appliance = require('../models/applianceModel.js');
 
 const NODE_STATUS_REQ = 0;
 const NODE_STATUS_RES = 1;
 
 
 onSocketData = function (data) {
-    console.log(data.toString());
-    const parsedData = JSON.parse(data.toString());
+    let parsedData = {};
+    try {
+        parsedData = JSON.parse(data.toString());
+    } catch (e) {
+        return;
+    }
     switch (parsedData.cmd) {
         case NODE_STATUS_RES: {
-            this.node.setMAC(parsedData.response.mac);
-            dataModel.readFile().then(content=>{
+            const response = parsedData.response || {};
+            if (!response.mac) {
+                return;
+            }
+            const node = new dataModel.Node(this.socket);
+            global.globalNodes.push(node);
+            node.setMAC(response.mac);
+            dataModel.readFile().then(content => {
                 const nodeConfig = JSON.parse(content);
-                this.node.setName(nodeConfig[this.node.mac].nodeName);
+                if (nodeConfig[node.mac] && nodeConfig[node.mac].nodeName) {
+                    node.setName(nodeConfig[node.mac].nodeName);
+                }
             });
-            parsedData.response.devices.forEach(device => {
-                let appliance = new Appliance(device.i2cAddress).setPWM(device.pwm).setState(device.state);
-                this.node.addAppliance(appliance);
-                dataModel.readFile().then(content=>{
+            const devices = response.devices || [];
+            devices.forEach(device => {
+                const appliance = new dataModel.Appliance(device.i2cAddress).setPWM(device.pwm).setState(device.state);
+                node.addAppliance(appliance);
+                dataModel.readFile().then(content => {
                     const nodeConfig = JSON.parse(content);
-                    appliance.setName(nodeConfig[this.node.mac].appliances[device.i2cAddress].applianceName)
+                    if (nodeConfig[node.mac] && nodeConfig[node.mac].appliances &&
+                        nodeConfig[node.mac].appliances[device.i2cAddress] &&
+                        nodeConfig[node.mac].appliances[device.i2cAddress].applianceName) {
+                        appliance.setName(nodeConfig[node.mac].appliances[device.i2cAddress].applianceName);
+                    }
                 });
             });
             break;
         }
     }
-
 }
 
 onSocketEnd = function () {
-    // delete sockets[socket.remoteAddress];
+    global.globalNodes.forEach((node, index) => {
+        if (node.socket === this.socket) {
+            console.log("Connection ended with " + global.globalNodes[index].mac);
+            global.globalNodes.splice(index, 1);
+        }
+    });
 }
 
 sendCommand = (socket, cmd) => {
     const command = {};
-    command.cmd = cmd;
+    command.cmd = cmd
     socket.write(JSON.stringify(command));
 }
 
 exports.onSocketConnection = (socket) => {
     // 'connection' listener.
-    let node = new Node(socket);
     console.log('client connected' + socket.remoteAddress);
-    socket.on('end', onSocketEnd.bind({ 'node': node }));
-    socket.on('data', onSocketData.bind({ 'node': node }));
+    socket.on('end', onSocketEnd.bind({ 'socket': socket }));
+    socket.on('data', onSocketData.bind({ 'socket': socket }));
     socket.pipe(socket);
-    // dataModel.nodes.push(node);
-    global.globalNodes.push(node);
     sendCommand(socket, NODE_STATUS_REQ);
 }
 
